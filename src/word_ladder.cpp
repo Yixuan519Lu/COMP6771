@@ -16,18 +16,6 @@ auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<st
 	return lexicon;
 }
 
-auto word_ladder::build_buckets(const std::unordered_set<std::string>& lexicon) -> std::unordered_map<std::string, std::vector<std::string>> {
-    std::unordered_map<std::string, std::vector<std::string>> buckets;
-    for (const auto& word : lexicon) {
-        for (size_t i = 0; i < word.size(); ++i) {
-            std::string bucket = word.substr(0, i) + "_" + word.substr(i + 1);
-            buckets[bucket].push_back(word);
-        }
-    }
-    return buckets;
-}
-
-
 auto word_ladder::generate(
 	const std::string &from,
 	const std::string &to,
