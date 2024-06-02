@@ -18,73 +18,70 @@ auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<st
 	return lexicon;
 }
 
+auto word_ladder::build_buckets(const std::unordered_set<std::string>& lexicon) -> std::unordered_map<std::string, std::vector<std::string>> {
+    std::unordered_map<std::string, std::vector<std::string>> buckets;
+    for (const auto& word : lexicon) {
+        for (size_t i = 0; i < word.size(); ++i) {
+            std::string bucket = word.substr(0, i) + "_" + word.substr(i + 1);
+            buckets[bucket].push_back(word);
+        }
+    }
+    return buckets;
+}
+
 /*
 find all possible words in current level
 */
 auto word_ladder::find_neighbors(const std::string& word,
-                                 const std::unordered_set<std::string>& lexicon,
-                                 const std::unordered_set<std::string>& visited) -> std::vector<std::string> {
-	std::vector<std::string> neighbors;
-	for (size_t pos = 0; pos < word.size(); pos++) {
-		auto new_word = word;
-		for (char comb = 'a'; comb <= 'z'; comb++) {
-			new_word[pos] = comb;
-			if (new_word != word && lexicon.find(new_word) != lexicon.end() && visited.find(new_word) == visited.end()) {
-				neighbors.push_back(new_word);
-			}
-		}
-	}
-	return neighbors;
+                    const std::unordered_map<std::string, std::vector<std::string>>& buckets,
+                    const std::unordered_set<std::string>& visited) -> std::vector<std::string> {
+    std::vector<std::string> neighbors;
+    for (size_t i = 0; i < word.size(); ++i) {
+        std::string bucket = word.substr(0, i) + "_" + word.substr(i + 1);
+        if (buckets.find(bucket) != buckets.end()) {
+            for (const auto& neighbor : buckets.at(bucket)) {
+                if (visited.find(neighbor) == visited.end()) {
+                    neighbors.push_back(neighbor);
+                }
+            }
+        }
+    }
+    return neighbors;
 }
 
-void word_ladder::update_curStageSize(const std::string& to,
-                                      const std::unordered_set<std::string>& lexicon,
-                                      bool& isfound,
-                                      std::vector<std::vector<std::string>>& result,
-                                      std::unordered_set<std::string>& visited,
-                                      std::queue<std::vector<std::string>>& myqueue,
-                                      std::unordered_set<std::string>& curStageVisited,
-                                      std::size_t& curStageSize) {
-	for (std::size_t i = 0; i < curStageSize; i++) {
-		std::vector<std::string> curPath = myqueue.front();
-		myqueue.pop();
-		std::string lastWord = curPath.back();
-		auto neighbors = find_neighbors(lastWord, lexicon, visited);
-		for (const auto& neighbor : neighbors) {
-			std::vector<std::string> newPath = curPath;
-			newPath.push_back(neighbor);
-			if (neighbor == to) {
-				result.push_back(newPath);
-				isfound = true;
-			}
-			else {
-				myqueue.push(newPath);
-			}
-			curStageVisited.insert(neighbor);
-		}
-	}
-}
 auto word_ladder::generate(const std::string& from,
                            const std::string& to,
                            const std::unordered_set<std::string>& lexicon) -> std::vector<std::vector<std::string>> {
-	//(void)from;
-	// (void)to;
-	// (void)lexicon;
-	bool isfound = false;
-	std::vector<std::vector<std::string>> result;
-	std::unordered_set<std::string> visited;
-	std::queue<std::vector<std::string>> myqueue;
-	myqueue.push({from});
-	visited.insert(from);
-	while (!myqueue.empty()) {
-		std::unordered_set<std::string> curStageVisited;
-		std::size_t curStageSize = myqueue.size();
-		update_curStageSize(to, lexicon, isfound, result, visited, myqueue, curStageVisited, curStageSize);
-		visited.insert(curStageVisited.begin(), curStageVisited.end());
-		if (isfound) {
-			break;
-		}
-	}
-	std::sort(result.begin(), result.end());
-	return result;
+    bool isfound = false;
+    std::vector<std::vector<std::string>> result;
+    std::unordered_set<std::string> visited;
+    std::queue<std::vector<std::string>> myqueue;
+    auto buckets = word_ladder::build_buckets(lexicon);  
+    myqueue.push({from});
+    visited.insert(from);
+
+    while (!myqueue.empty() && !isfound) {
+        std::unordered_set<std::string> curStageVisited;
+        std::size_t curStageSize = myqueue.size();
+        for (std::size_t i = 0; i < curStageSize; i++) {
+            std::vector<std::string> curPath = myqueue.front();
+            myqueue.pop();
+            std::string changedWord = curPath.back();
+            auto neighbors = word_ladder::find_neighbors(changedWord, buckets, visited);
+            for (const auto& neighbor : neighbors) {
+                std::vector<std::string> newPath = curPath;
+                newPath.push_back(neighbor);
+                if (neighbor == to) {
+                    result.push_back(newPath);
+                    isfound = true;
+                } else {
+                    myqueue.push(newPath);
+                }
+                curStageVisited.insert(neighbor);
+            }
+        }
+        visited.insert(curStageVisited.begin(), curStageVisited.end());
+    }
+    std::sort(result.begin(), result.end());
+    return result;
 }
