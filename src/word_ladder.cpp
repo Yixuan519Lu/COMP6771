@@ -1,10 +1,19 @@
 #include "word_ladder.h"
 
 auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<std::string> {
-	(void) path;
-	// remove this line once implemented
+	std::ifstream inFile;
+	std::string word;
+	std::unordered_set<std::string> lexicon;
+	inFile.open(path);
+	if (!inFile) {
+    	exit(1);  
+	}
+	while(inFile>>word){
+		lexicon.insert(word);
+	}
+	inFile.close();
 
-	return {};
+	return lexicon;
 }
 
 
@@ -13,10 +22,11 @@ auto word_ladder::generate(
 	const std::string &to,
 	const std::unordered_set<std::string> &lexicon
 ) -> std::vector<std::vector<std::string>> {
-	(void)from;
+	//(void)from;
 	(void)to;
 	(void)lexicon;
-	// remove this line once implemented
-
+	std::set<std::string> visited;
+	std::queue<std::vector<std::string>> myqueue;
+	myqueue.push({from});
 	return {};
 }
