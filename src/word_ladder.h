@@ -4,6 +4,12 @@
 #include <string>
 #include <unordered_set>
 #include <vector>
+#include <queue>
+#include <iostream>
+#include <fstream>
+#include <set>
+#include <cstdio>
+
 
 namespace word_ladder {
 // Given a file path to a newline-separated list of words...
