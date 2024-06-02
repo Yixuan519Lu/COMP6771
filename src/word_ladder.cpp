@@ -24,28 +24,25 @@ void word_ladder::myDfs(const std::string &word, std::vector<std::string> &seq) 
 auto word_ladder::generate(const std::string& from,
                            const std::string& to,
                            const std::unordered_set<std::string>& lexicon) -> std::vector<std::vector<std::string>> {
-	//(void)from;
-	//(void)to;
-	//(void)lexicon;
 	std::unordered_set<std::string> mylex(lexicon.begin(), lexicon.end());
-	std::queue<std::string> myqueue;
-	myqueue.push({from});
+	std::queue<std::string> myQueue;
+	myQueue.push({from});
 	mylex.erase(from);
 	wordSteps[from] = 1;
 	startWord = from;
-	std::size_t sizee = from.size();
-	while (!myqueue.empty()) {
-		std::string word = myqueue.front();
+	std::size_t wordSize = from.size();
+	while (!myQueue.empty()) {
+		std::string word = myQueue.front();
 		int steps = wordSteps[word];
-		myqueue.pop();
+		myQueue.pop();
 		if (word == to)
 			break;
-		for (std::size_t i = 0; i < sizee; i++) {
+		for (std::size_t i = 0; i < wordSize; i++) {
 			char original = word[i];
 			for (char ch = 'a'; ch <= 'z'; ch++) {
 				word[i] = ch;
-				if (mylex.count(word) > 0) {
-					myqueue.push({word});
+				if (mylex.find(word) != mylex.end()) {
+					myQueue.push({word});
 					mylex.erase(word);
 					wordSteps[word] = steps + 1;
 				}
