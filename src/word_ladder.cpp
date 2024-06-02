@@ -1,4 +1,5 @@
 #include "word_ladder.h"
+#include <cstddef>
 #include <vector>
 
 auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<std::string> {
@@ -20,12 +21,12 @@ auto word_ladder::read_lexicon(const std::string &path) -> std::unordered_set<st
 /*
 find all possible words in current level
 */
-auto word_ladder::find_neighbors(const std::string &word, const std::unordered_set<std::string> &lexicon, const std::set<std::string> &visited) -> std::vector<std::string> {
+auto word_ladder::find_neighbors(const std::string &word, const std::unordered_set<std::string> &lexicon, const std::unordered_set<std::string> &visited) -> std::vector<std::string> {
     std::vector<std::string> neighbors;
-    for (size_t i = 0; i < word.size(); i++) {
+    for (size_t pos = 0; pos < word.size(); pos++) {
         auto new_word = word;
-        for (char c = 'a'; c <= 'z'; ++c) {
-            new_word[i] = c;
+        for (char comb = 'a'; comb <= 'z'; comb++) {
+            new_word[pos] = comb;
             if (new_word != word && lexicon.find(new_word) != lexicon.end() && visited.find(new_word) == visited.end()) {
                 neighbors.push_back(new_word);
             }
@@ -42,13 +43,20 @@ auto word_ladder::generate(
 	//(void)from;
 	(void)to;
 	(void)lexicon;
-	std::set<std::string> visited;
+	std::unordered_set<std::string> visited;
 	std::queue<std::vector<std::string>> myqueue;
 	myqueue.push({from});
 	visited.insert(from);
 	while(!myqueue.empty()){
-		std::vector<std::string> curPath = myqueue.front();
-		myqueue.pop();
+		std::unordered_set<std::string> curStageVisited;
+		std::size_t curStageSize= myqueue.size();
+		for(std::size_t i=0;i<curStageSize;i++){
+			std::vector<std::string> curPath = myqueue.front();
+			myqueue.pop();
+			std::string lastWord = curPath.back();
+			auto neighbors = find_neighbors(lastWord, lexicon, visited);
+		}
+
 	}
 	return {};
 }
