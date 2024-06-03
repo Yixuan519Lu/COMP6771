@@ -70,9 +70,11 @@ auto word_ladder::generate(const std::string& from,
 			word[i] = original;
 		}
 	}
-	std::vector<std::string> seq;
-	seq.push_back(to);
-	myDfs(to, seq);
-	std::sort(ans.begin(), ans.end());
+	if (wordSteps.find(to) != wordSteps.end()) {
+		std::vector<std::string> seq;
+		seq.push_back(to);
+		myDfs(to, seq);
+		std::sort(ans.begin(), ans.end());
+	}
 	return ans;
 }

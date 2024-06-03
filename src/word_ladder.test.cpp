@@ -26,17 +26,41 @@ TEST_CASE("word_ladder::read_lexicon works as expected") {
 }
 
 
-// TEST_CASE("at -> it") {
-// 	auto const lexicon = std::unordered_set<std::string>{
-// 		"at",
-// 		"it"
-// 	};
+TEST_CASE("word_ladder::generate multiple paths") {
+    auto const lexicon = std::unordered_set<std::string>{
+        "hit",
+        "hot",
+        "dot",
+        "dog",
+        "cog",
+        "lot",
+        "log"
+    };
 
-// 	const auto expected = std::vector<std::vector<std::string>>{
-// 		{"at", "it"}
-// 	};
+    const auto expected = std::vector<std::vector<std::string>>{
+        {"hit", "hot", "dot", "dog", "cog"},
+        {"hit", "hot", "lot", "log", "cog"}
+    };
 
-// 	auto const ladders = word_ladder::generate("at", "it", lexicon);
+    auto ladders = word_ladder::generate("hit", "cog", lexicon);
 
-// 	CHECK(ladders == expected);
-// }
+    std::sort(ladders.begin(), ladders.end());
+    CHECK(ladders == expected);
+}
+
+TEST_CASE("word_ladder::generate with starting word not in lexicon") {
+    auto const lexicon = std::unordered_set<std::string>{
+        "hot",
+        "dot",
+        "dog",
+        "cog",
+        "lot",
+        "log"
+    };
+
+    const auto expected = std::vector<std::vector<std::string>>{};
+
+    auto ladders = word_ladder::generate("hit", "cog", lexicon);
+
+    CHECK(ladders == expected);
+}
