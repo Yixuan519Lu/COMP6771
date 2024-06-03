@@ -64,3 +64,27 @@ TEST_CASE("word_ladder::generate with starting word not in lexicon") {
 
     CHECK(ladders == expected);
 }
+
+TEST_CASE("word_ladder::generate from awake to sleep") {
+    auto const english_words = ::word_ladder::read_lexicon("english.txt");
+
+    const auto expected = std::vector<std::vector<std::string>>{
+        {"awake", "aware", "sware", "share", "sharn", "shawn", "shewn", "sheen", "sheep", "sleep"},
+        {"awake", "aware", "sware", "share", "shire", "shirr", "shier", "sheer", "sheep", "sleep"}
+    };
+
+    auto ladders = word_ladder::generate("awake", "sleep", english_words);
+
+    std::sort(ladders.begin(), ladders.end());
+    CHECK(ladders == expected);
+}
+
+TEST_CASE("word_ladder::generate from airplane to tricycle") {
+    auto const english_words = ::word_ladder::read_lexicon("english.txt");
+
+    const auto expected = std::vector<std::vector<std::string>>{};
+
+    auto ladders = word_ladder::generate("airplane", "tricycle", english_words);
+
+    CHECK(ladders == expected);
+}
