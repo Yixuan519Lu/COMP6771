@@ -26,6 +26,10 @@ namespace word_ladder {
 	// - lexicon.contains(from)
 	// - lexicon.contains(to)
 	void myDfs(const std::string from, std::vector<std::string>& seq);
+    /*
+    clear ans wordsteps and startword
+    */
+	void clearState();
 	auto generate(const std::string& from,
 	              const std::string& to,
 	              const std::unordered_set<std::string>& lexicon) -> std::vector<std::vector<std::string>>;

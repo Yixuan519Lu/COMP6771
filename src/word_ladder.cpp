@@ -41,12 +41,15 @@ void word_ladder::myDfs(std::string from, std::vector<std::string>& seq) {
 	}
 }
 
-auto word_ladder::generate(const std::string& from,
-                           const std::string& to,
-                           const std::unordered_set<std::string>& lexicon) -> std::vector<std::vector<std::string>> {
+void word_ladder::clearState() {
 	ans.clear();
 	wordSteps.clear();
 	startWord.clear();
+}
+auto word_ladder::generate(const std::string& from,
+                           const std::string& to,
+                           const std::unordered_set<std::string>& lexicon) -> std::vector<std::vector<std::string>> {
+	clearState();
 	if (lexicon.find(from) == lexicon.end() || lexicon.find(to) == lexicon.end()) {
 		return {};
 	}
