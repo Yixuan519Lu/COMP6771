@@ -25,10 +25,22 @@ namespace word_ladder {
 	// - from.size() == to.size()
 	// - lexicon.contains(from)
 	// - lexicon.contains(to)
+
+	/*
+    use DFS backtrack paths
+    */
 	void myDfs(const std::string from, std::vector<std::string>& seq);
     /*
-    clear ans wordsteps and startword
+    use BFS to find the step count to reach each possible word
     */
+	void myBfs(const std::string& from, const std::string& to, std::unordered_set<std::string>& lexicon);
+    /*
+    try all possible words
+    */
+    void transformWord(std::string& word, std::unordered_set<std::string>& lexicon, std::queue<std::string>& myQueue, int steps);
+    /*
+	clear ans wordsteps and startword
+	*/
 	void clearState();
 	auto generate(const std::string& from,
 	              const std::string& to,
