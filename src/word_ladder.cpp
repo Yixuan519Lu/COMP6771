@@ -1,5 +1,4 @@
 #include "word_ladder.h"
-#include <cstddef>
 
 auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<std::string> {
 	std::ifstream inFile;
@@ -13,7 +12,6 @@ auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<st
 		lexicon.insert(word);
 	}
 	inFile.close();
-
 	return lexicon;
 }
 
@@ -21,26 +19,26 @@ auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<st
 use DFS backtrack paths
 */
 void word_ladder::myDfs(std::string from, std::vector<std::string>& seq) {
-    if (from == startWord) {
-        reverse(seq.begin(), seq.end());
-        ans.push_back(seq);
-        reverse(seq.begin(), seq.end());
-        return;
-    }
-    std::size_t n = from.size();  
-    int steps = wordSteps[from];  
-    for (std::size_t i = 0; i < n; i++) {  
-        char original = from[i];
-        for (char ch = 'a'; ch <= 'z'; ch++) {
-            from[i] = ch;
-            if (wordSteps.find(from) != wordSteps.end() && wordSteps[from] + 1 == steps) {
-                seq.push_back(from);
-                myDfs(from, seq);
-                seq.pop_back();
-            }
-        }
-        from[i] = original;
-    }
+	if (from == startWord) {
+		reverse(seq.begin(), seq.end());
+		ans.push_back(seq);
+		reverse(seq.begin(), seq.end());
+		return;
+	}
+	std::size_t n = from.size();
+	int steps = wordSteps[from];
+	for (std::size_t i = 0; i < n; i++) {
+		char original = from[i];
+		for (char ch = 'a'; ch <= 'z'; ch++) {
+			from[i] = ch;
+			if (wordSteps.find(from) != wordSteps.end() && wordSteps[from] + 1 == steps) {
+				seq.push_back(from);
+				myDfs(from, seq);
+				seq.pop_back();
+			}
+		}
+		from[i] = original;
+	}
 }
 
 auto word_ladder::generate(const std::string& from,
