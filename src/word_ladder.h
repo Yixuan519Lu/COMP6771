@@ -25,7 +25,7 @@ namespace word_ladder {
     // - from.size() == to.size()
     // - lexicon.contains(from)
     // - lexicon.contains(to)
-    void myDfs(const std::string &word, std::vector<std::string> &seq);
+    void myDfs(const std::string from, std::vector<std::string> &seq);
     auto generate(
         const std::string& from,
         const std::string& to,
@@ -37,7 +37,6 @@ namespace word_ladder {
         std::string startWord; // record from
     }
 
-    void dfs(const std::string &word, std::vector<std::string> &seq);
 } // namespace word_ladder
 
 #endif // COMP6771_WORD_LADDER_H
