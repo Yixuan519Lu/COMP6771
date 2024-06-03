@@ -40,38 +40,48 @@ void word_ladder::myDfs(std::string from, std::vector<std::string>& seq) {
 		from[i] = original;
 	}
 }
-
+/*
+    use BFS to find the step count to reach each possible word
+    */
 void word_ladder::myBfs(const std::string& from, const std::string& to, std::unordered_set<std::string>& lexicon) {
-    std::queue<std::string> myQueue;
-    myQueue.push({from});
-    lexicon.erase(from);
-    wordSteps[from] = 1;
-    startWord = from;
-    while (!myQueue.empty()) {
-        std::string word = myQueue.front();
-        int steps = wordSteps[word];
-        myQueue.pop();
-        if (word == to) break;
-        transformWord(word, lexicon, myQueue, steps);
-    }
+	std::queue<std::string> myQueue;
+	myQueue.push({from});
+	lexicon.erase(from);
+	wordSteps[from] = 1;
+	startWord = from;
+	while (!myQueue.empty()) {
+		std::string word = myQueue.front();
+		int steps = wordSteps[word];
+		myQueue.pop();
+		if (word == to)
+			break;
+		transformWord(word, lexicon, myQueue, steps);
+	}
 }
-
-void word_ladder::transformWord(std::string& word, std::unordered_set<std::string>& lexicon, std::queue<std::string>& myQueue, int steps) {
-    std::size_t wordSize = word.size();
-    for (std::size_t i = 0; i < wordSize; i++) {
-        char original = word[i];
-        for (char ch = 'a'; ch <= 'z'; ch++) {
-            word[i] = ch;
-            if (lexicon.find(word) != lexicon.end()) {
-                myQueue.push({word});
-                lexicon.erase(word);
-                wordSteps[word] = steps + 1;
-            }
-        }
-        word[i] = original;
-    }
+/*
+    try all possible words
+    */
+void word_ladder::transformWord(std::string& word,
+                                std::unordered_set<std::string>& lexicon,
+                                std::queue<std::string>& myQueue,
+                                int steps) {
+	std::size_t wordSize = word.size();
+	for (std::size_t i = 0; i < wordSize; i++) {
+		char original = word[i];
+		for (char ch = 'a'; ch <= 'z'; ch++) {
+			word[i] = ch;
+			if (lexicon.find(word) != lexicon.end()) {
+				myQueue.push({word});
+				lexicon.erase(word);
+				wordSteps[word] = steps + 1;
+			}
+		}
+		word[i] = original;
+	}
 }
-
+/*
+    clear ans wordsteps and startword
+    */
 void word_ladder::clearState() {
 	ans.clear();
 	wordSteps.clear();
