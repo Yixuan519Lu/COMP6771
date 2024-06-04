@@ -25,7 +25,7 @@ TEST_CASE("word_ladder::read_lexicon works as expected") {
 	CHECK(english_lexicon.find("jetbrains") == english_lexicon.end());
 }
 
-TEST_CASE("word_ladder::generate multiple paths") {
+TEST_CASE("word_ladder::generate two paths") {
 	auto const lexicon = std::unordered_set<std::string>{"hit", "hot", "dot", "dog", "cog", "lot", "log"};
 
 	const auto expected =
