@@ -37,6 +37,22 @@ TEST_CASE("word_ladder::generate two paths") {
 	CHECK(ladders == expected);
 }
 
+TEST_CASE("word_ladder::generate three paths") {
+    auto const lexicon = std::unordered_set<std::string>{"hit", "hot", "dot", "dog", "cog", "lot", "log", "lit", "fit", "fog"};
+
+    const auto expected =
+        std::vector<std::vector<std::string>>{
+            {"hit", "hot", "dot", "dog", "cog"},
+            {"hit", "hot", "lot", "log", "cog"},
+            {"hit", "lit", "lot", "log", "cog"}
+        };
+
+    auto ladders = word_ladder::generate("hit", "cog", lexicon);
+
+    std::sort(ladders.begin(), ladders.end());
+    CHECK(ladders == expected);
+}
+
 TEST_CASE("word_ladder::generate with starting word not in lexicon") {
 	auto const lexicon = std::unordered_set<std::string>{"hot", "dot", "dog", "cog", "lot", "log"};
 
