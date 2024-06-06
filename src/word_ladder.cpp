@@ -49,7 +49,7 @@ void word_ladder::myBfs(const std::string& from, const std::string& to, std::uno
 	lexicon.erase(from);
 	wordSteps[from] = 1;
 	startWord = from;
-	while (!myQueue.empty()) {
+	while (not myQueue.empty()) {
 		std::string word = myQueue.front();
 		int steps = wordSteps[word];
 		myQueue.pop();
