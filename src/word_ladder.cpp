@@ -15,9 +15,6 @@ auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<st
 	return lexicon;
 }
 
-/*
-use DFS backtrack paths
-*/
 void word_ladder::myDfs(std::string from, std::vector<std::string>& seq) {
 	if (from == startWord) {
 		reverse(seq.begin(), seq.end());
@@ -39,9 +36,7 @@ void word_ladder::myDfs(std::string from, std::vector<std::string>& seq) {
 		c = original;
 	}
 }
-/*
-    use BFS to find the step count to reach each possible word
-    */
+
 void word_ladder::myBfs(const std::string& from, const std::string& to, std::unordered_set<std::string>& lexicon) {
 	std::queue<std::string> myQueue;
 	myQueue.push({from});
@@ -57,30 +52,25 @@ void word_ladder::myBfs(const std::string& from, const std::string& to, std::uno
 		transformWord(word, lexicon, myQueue, steps);
 	}
 }
-/*
-    try all possible words
-    */
+
 void word_ladder::transformWord(std::string& word,
                                 std::unordered_set<std::string>& lexicon,
                                 std::queue<std::string>& myQueue,
                                 int steps) {
-	std::size_t wordSize = word.size();
-	for (std::size_t i = 0; i < wordSize; i++) {
-		char original = word[i];
+	for (char& c : word) {
+		const char original = c;
 		for (char ch = 'a'; ch <= 'z'; ch++) {
-			word[i] = ch;
+			c = ch;
 			if (lexicon.find(word) != lexicon.end()) {
 				myQueue.push({word});
 				lexicon.erase(word);
 				wordSteps[word] = steps + 1;
 			}
 		}
-		word[i] = original;
+		c = original;
 	}
 }
-/*
-    clear ans wordsteps and startword
-    */
+
 void word_ladder::clearState() {
 	ans.clear();
 	wordSteps.clear();
@@ -90,7 +80,7 @@ void word_ladder::clearState() {
 auto word_ladder::generate(const std::string& from, const std::string& to, const std::unordered_set<std::string>& lexicon)
     -> std::vector<std::vector<std::string>> {
 	clearState();
-	if (lexicon.find(from) == lexicon.end() || lexicon.find(to) == lexicon.end()) {
+	if (lexicon.find(from) == lexicon.end() or lexicon.find(to) == lexicon.end()) {
 		return {};
 	}
 	std::unordered_set<std::string> mylex(lexicon.begin(), lexicon.end());
