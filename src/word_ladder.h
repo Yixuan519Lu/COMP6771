@@ -27,16 +27,16 @@ namespace word_ladder {
     // - lexicon.contains(to)
 
     // Uses DFS to backtrack paths.
-    void myDfs(const std::string from, std::vector<std::string>& seq);
+    void my_dfs(const std::string from, std::vector<std::string>& seq);
 
     // Uses BFS to find the step count to reach each possible word.
-    void myBfs(const std::string& from, const std::string& to, std::unordered_set<std::string>& lexicon);
+    void my_bfs(const std::string& from, const std::string& to, std::unordered_set<std::string>& lexicon);
 
     // Tries all possible words.
-    void transformWord(std::string& word, std::unordered_set<std::string>& lexicon, std::queue<std::string>& myQueue, int steps);
+    void transform_word(std::string& word, std::unordered_set<std::string>& lexicon, std::queue<std::string>& myQueue, int steps);
 
     // Clears the state including ans, wordSteps, and startWord.
-    void clearState();
+    void clear_state();
 
     // Generates all shortest paths from start word to destination word using the provided lexicon.
     // Returns a vector of vectors containing all shortest paths.
