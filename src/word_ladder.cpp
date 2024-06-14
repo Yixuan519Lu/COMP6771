@@ -23,7 +23,7 @@ void word_ladder::my_dfs(std::string from, std::vector<std::string>& seq) {
 		return;
 	}
 	const int steps = wordSteps[from];
-	for (char& c : from) { 
+	for (char& c : from) {
 		const char original = c;
 		for (char ch = 'a'; ch <= 'z'; ++ch) {
 			c = ch;
@@ -54,9 +54,9 @@ void word_ladder::my_bfs(const std::string& from, const std::string& to, std::un
 }
 
 void word_ladder::transform_word(std::string& word,
-                                std::unordered_set<std::string>& lexicon,
-                                std::queue<std::string>& myQueue,
-                                int steps) {
+                                 std::unordered_set<std::string>& lexicon,
+                                 std::queue<std::string>& myQueue,
+                                 int steps) {
 	for (char& c : word) {
 		const char original = c;
 		for (char ch = 'a'; ch <= 'z'; ch++) {
