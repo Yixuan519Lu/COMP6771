@@ -1,9 +1,9 @@
 #include "word_ladder.h"
 
 auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<std::string> {
-	std::ifstream inFile;
-	std::string word;
-	std::unordered_set<std::string> lexicon;
+	auto inFile = std::ifstream();
+	auto word = std::string();
+	auto lexicon = std::unordered_set<std::string>();
 	inFile.open(path);
 	if (!inFile) {
 		exit(1);
@@ -17,15 +17,15 @@ auto word_ladder::read_lexicon(const std::string& path) -> std::unordered_set<st
 
 void word_ladder::my_dfs(std::string from, std::vector<std::string>& seq) {
 	if (from == startWord) {
-		reverse(seq.begin(), seq.end());
+		std::reverse(seq.begin(), seq.end());
 		ans.push_back(seq);
-		reverse(seq.begin(), seq.end());
+		std::reverse(seq.begin(), seq.end());
 		return;
 	}
-	const int steps = wordSteps[from];
-	for (char& c : from) {
-		const char original = c;
-		for (char ch = 'a'; ch <= 'z'; ++ch) {
+	const auto steps = wordSteps[from];
+	for (auto& c : from) {
+		const auto original = c;
+		for (auto ch = 'a'; ch <= 'z'; ++ch) {
 			c = ch;
 			if (wordSteps.find(from) != wordSteps.end() && wordSteps[from] + 1 == steps) {
 				seq.push_back(from);
@@ -38,14 +38,14 @@ void word_ladder::my_dfs(std::string from, std::vector<std::string>& seq) {
 }
 
 void word_ladder::my_bfs(const std::string& from, const std::string& to, std::unordered_set<std::string>& lexicon) {
-	std::queue<std::string> myQueue;
+	auto myQueue = std::queue<std::string>();
 	myQueue.push({from});
 	lexicon.erase(from);
 	wordSteps[from] = 1;
 	startWord = from;
 	while (not myQueue.empty()) {
-		std::string word = myQueue.front();
-		int steps = wordSteps[word];
+		auto word = myQueue.front();
+		auto steps = wordSteps[word];
 		myQueue.pop();
 		if (word == to)
 			break;
@@ -57,9 +57,9 @@ void word_ladder::transform_word(std::string& word,
                                  std::unordered_set<std::string>& lexicon,
                                  std::queue<std::string>& myQueue,
                                  int steps) {
-	for (char& c : word) {
-		const char original = c;
-		for (char ch = 'a'; ch <= 'z'; ch++) {
+	for (auto& c : word) {
+		const auto original = c;
+		for (auto ch = 'a'; ch <= 'z'; ++ch) {
 			c = ch;
 			if (lexicon.find(word) != lexicon.end()) {
 				myQueue.push({word});
@@ -83,10 +83,10 @@ auto word_ladder::generate(const std::string& from, const std::string& to, const
 	if (lexicon.find(from) == lexicon.end() or lexicon.find(to) == lexicon.end()) {
 		return {};
 	}
-	std::unordered_set<std::string> mylex(lexicon.begin(), lexicon.end());
+	auto mylex = std::unordered_set<std::string>(lexicon.begin(), lexicon.end());
 	my_bfs(from, to, mylex);
 	if (wordSteps.find(to) != wordSteps.end()) {
-		std::vector<std::string> seq;
+		auto seq = std::vector<std::string>();
 		seq.push_back(to);
 		my_dfs(to, seq);
 		std::sort(ans.begin(), ans.end());
