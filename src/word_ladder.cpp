@@ -25,19 +25,18 @@ void word_ladder::myDfs(std::string from, std::vector<std::string>& seq) {
 		reverse(seq.begin(), seq.end());
 		return;
 	}
-	std::size_t n = from.size();
-	int steps = wordSteps[from];
-	for (std::size_t i = 0; i < n; i++) {
-		char original = from[i];
-		for (char ch = 'a'; ch <= 'z'; ch++) {
-			from[i] = ch;
+	const int steps = wordSteps[from];
+	for (char& c : from) { 
+		const char original = c;
+		for (char ch = 'a'; ch <= 'z'; ++ch) {
+			c = ch;
 			if (wordSteps.find(from) != wordSteps.end() && wordSteps[from] + 1 == steps) {
 				seq.push_back(from);
 				myDfs(from, seq);
 				seq.pop_back();
 			}
 		}
-		from[i] = original;
+		c = original;
 	}
 }
 /*
